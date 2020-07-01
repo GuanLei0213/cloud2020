@@ -1,0 +1,21 @@
+server:
+  port: 80
+
+eureka:
+  client:
+    register-with-eureka: false #表示是否将自己注册进EurekaServer,默认为true。这里就不把feign这个微服务注册进Eureka
+                                #注册中心了，因为它就是一个客户端，可以不用注册进注册中心集群。
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/ #服务中心的地址
+
+#设置openfeign客户端超时时间（openFeign默认支持Ribbon）
+ribbon:
+  ReadTimout: 5000 #指建立连接所用的时间，单位毫秒
+  ConnectTimeout: 5000 #指建立连接后，从服务器读取到可用资源所用的时间，单位毫秒
+logging:
+  level:
+    #feign日志以什么级别监控哪个端口
+    com.gl.springcloud.service.PaymentFeignService: debug
+feign:
+  hystrix:
+    enabled: true #在feign中开启hystrix注解
