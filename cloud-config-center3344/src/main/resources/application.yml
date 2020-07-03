@@ -11,48 +11,6 @@ spring:
           uri: git@github.com:GuanLei0213/springcloud-config.git #GitHub上面的git仓库的SSH地址
           search-paths: #搜索的目录
             - springcloud-config
-          force-pull: true  #设置强行拉取
-          private-key: |
-            -----BEGIN OPENSSH PRIVATE KEY-----
-            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
-            -----END OPENSSH PRIVATE KEY-----
-          username: GuanLei0213
-          password: jiayougl6!
       label: master #读取的分支
 
 eureka:
