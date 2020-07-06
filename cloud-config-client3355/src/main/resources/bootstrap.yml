@@ -11,6 +11,11 @@ spring:
       profile: dev  #文件后缀，即读取的是config-dev.yml文件
       uri: http://localhost:3344  #配置中心地址
       #所以最终读取的是：http://localhost:3344/master/config-dev.yml
+  rabbitmq: #添加RabbitMQ配置，支持消息总线
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 eureka:
   client:
