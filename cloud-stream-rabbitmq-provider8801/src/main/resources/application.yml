@@ -1,0 +1,35 @@
+server:
+  port: 8801
+
+spring:
+  application:
+    name: cloud-stream-provider
+  cloud:
+    stream:
+      bindings: #外部消息传递系统和应用程序之间的桥梁
+        output: #表示生产者
+          destination: studyExchange  #表示通道名称，要向这个通道发送内容
+          content-type: application/json  #设置消息类型，本次为json，文本设置为text/plain
+          binder: defaultRabbit #设置要绑定的消息服务的具体设置
+      binders:  #目标绑定器，目标指的是 kafka 还是 RabbitMQ
+        defaultRabbit:  #表示定义的名称，用于binding整合
+          type: rabbit  #消息组件类型
+          environment:  #设置rabbit的相关环境配置
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+
+eureka:
+  client:
+    register-with-eureka: true #表示是否将自己注册进EurekaServer,默认为true
+    fetch-registry: true #是否从EurekaServer中抓取自己的注册信息，默认为true,单节点无所谓，集群必须设置为true才能配合ribbon使用负载均衡
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/ #服务中心的地址
+  instance:
+    lease-renewal-interval-in-seconds: 2 #设置心跳的时间间隔（默认是30秒）
+    lease-expiration-duration-in-seconds: 5 #如果现在超过了5秒的时间间隔（默认是90秒）
+    instance-id: send-8801.com  #在消息列表时显示主机名称
+    prefer-ip-address: true #访问路径变为IP地址
