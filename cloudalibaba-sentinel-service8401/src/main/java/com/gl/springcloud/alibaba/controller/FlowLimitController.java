@@ -3,9 +3,15 @@ package com.gl.springcloud.alibaba.controller;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.gl.springcloud.alibaba.handler.BlockHandler;
+import com.gl.springcloud.alibaba.service.PaymentService;
+import com.gl.springcloud.entity.CommonResult;
+import com.gl.springcloud.entity.Payment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * 被流量控制的Controller，根据yml的配置，该Controller的所有接口都会被监控到。
@@ -41,8 +47,20 @@ public class FlowLimitController {
     }
 
     @GetMapping(value = "/block")
-    @SentinelResource(value = "block",blockHandlerClass = BlockHandler.class)
+    @SentinelResource(value = "block",blockHandlerClass = BlockHandler.class,
+                                        blockHandler = "handlerException2")
     public String blockHandler(){
         return "处理成功......";
+    }
+
+    @Resource
+    private PaymentService paymentService;
+    /**
+     * OpenFeign测试
+     */
+    @GetMapping(value = "/openFeign/test/{id}")
+    public CommonResult<Payment> openFeignTest(Long id){
+        CommonResult<Payment> result = paymentService.paymentSQL(id);
+        return result;
     }
 }
